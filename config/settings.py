@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +7,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-test-key")
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# Allow all hosts for now, Render will set the real one
+# Allow all hosts for now
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -19,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'drf_yasg', 
+    'drf_yasg',
     'polls',
 ]
 
@@ -54,14 +53,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# Use DATABASE_URL on Render, fallback to local SQLite
+# ---------------------------
+# SQLite Database (Local)
+# ---------------------------
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = []
@@ -71,6 +70,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (for Render deployment)
+# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
